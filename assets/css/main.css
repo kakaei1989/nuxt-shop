@@ -481,6 +481,13 @@ a:focus {
   background-color: #222831;
   color: #ffffff;
 }
+.food_section .filters_menu li.active a{
+  background-color: #222831;
+  color: #ffffff;
+}
+.food_section .filters_menu li a{
+color: #222831;
+}
 
 .food_section .box {
   position: relative;
