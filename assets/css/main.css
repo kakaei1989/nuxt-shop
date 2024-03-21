@@ -1318,3 +1318,12 @@ color: #222831;
     width: 50%;
   }
 }
+/* Vue-Tostification */
+@media only screen and (min-width: 600px) {
+  .Vue-Toastification__container.top-right .Vue-Toastification__toast--rtl,
+  .Vue-Toastification__container.bottom-right .Vue-Toastification__toast--rtl {
+    margin-right: unset !important;
+    margin-left: auto !important;
+    font-family: "Vazir", Arial, Helvetica, sans-serif !important;
+  }
+}
