@@ -1,7 +1,7 @@
 <template>
 <Slider/>
 <Features/>
-<ProductsTab/>
+<ProductTabs/>
 </template>
 
 <script>
