@@ -60,35 +60,8 @@
 
                 <div class="col-sm-12 col-lg-9">
                     <div class="row gx-3">
-                        <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div>
-                                    <div class="img-box">
-                                        <!-- <img src="./images/b1.jpg" alt=""> -->
-                                    </div>
-                                    <div class="detail-box">
-                                        <h5>
-                                            لورم ایپسوم متن
-                                        </h5>
-                                        <p>
-                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
-                                            از
-                                            طراحان
-                                            گرافیک است.
-                                        </p>
-                                        <div class="options">
-                                            <h6>
-                                                <del>45,000</del>
-                                                34,000
-                                                <span>تومان</span>
-                                            </h6>
-                                            <a href="">
-                                                <i class="bi bi-cart-fill text-white fs-5"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div v-for="product in data.data.products" :key="product.id" class="col-sm-6 col-lg-4">
+                            <ProductCard :product="product" />
                         </div>
                     </div>
 
@@ -109,5 +82,9 @@
 const { public: { apiBase } } = useRuntimeConfig();
 
 const { data: categories } = await useFetch(`${apiBase}/categories`);
+
+const { data } = await useFetch(`${apiBase}/menu`);
+
+console.log(data.value.data.products);
 
 </script>
