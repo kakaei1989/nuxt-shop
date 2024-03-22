@@ -19,8 +19,7 @@
                             دسته بندی
                         </div>
                         <ul>
-                            <li v-for="category in categories.data" :key="category.id"
-                                class="my-2 cursor-pointer">
+                            <li v-for="category in categories.data" :key="category.id" class="my-2 cursor-pointer">
                                 {{ category.name }}
                             </li>
                         </ul>
@@ -59,19 +58,28 @@
                 </div>
 
                 <div class="col-sm-12 col-lg-9">
-                    <div class="row gx-3">
-                        <div v-for="product in data.data.products" :key="product.id" class="col-sm-6 col-lg-4">
-                            <ProductCard :product="product" />
-                        </div>
+                    <div v-if="pending" class="d-flex justify-content-center align-items-center h-100">
+                        <div class="spinner-border"></div>
                     </div>
 
-                    <nav class="d-flex justify-content-center mt-5">
-                        <ul class="pagination">
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        </ul>
-                    </nav>
+                    <template v-else>
+                        <div class="row gx-3">
+                            <div v-for="product in data.data.products" :key="product.id" class="col-sm-6 col-lg-4">
+                                <ProductCard :product="product" />
+                            </div>
+                        </div>
+
+                        <nav class="d-flex justify-content-center mt-5">
+                            <ul class="pagination">
+                                <li v-for="(link, index) in data.data.meta.links.slice(1, -1)" :key="index"
+                                    class="page-item" :class="{ active: link.active }">
+                                    <button @click="handleFilter({ page: link.label })" class="page-link">{{
+                                        link.label
+                                    }}</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </template>
                 </div>
             </div>
         </div>
@@ -79,12 +87,20 @@
 </template>
 
 <script setup>
+
+const query = ref({});
 const { public: { apiBase } } = useRuntimeConfig();
 
 const { data: categories } = await useFetch(`${apiBase}/categories`);
 
-const { data } = await useFetch(`${apiBase}/menu`);
+const { data, refresh, pending } = await useFetch(() => `${apiBase}/menu`, {
+    query: query
+});
 
-console.log(data.value.data.products);
+function handleFilter(param) {
+    query.value = { ...param }
+
+    refresh()
+}
 
 </script>
