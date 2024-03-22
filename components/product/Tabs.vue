@@ -34,7 +34,9 @@ import {Tab, Tabs} from 'vue3-tabs-component'
 import {ref} from "vue";
 
 const {public: {apiBase}} = useRuntimeConfig();
-const products = ref([])
-products.value = await $fetch(`${apiBase}/products/products-tabs`)
+// const products = ref([])
+// products.value = await $fetch(`${apiBase}/products/products-tabs`)
 
+const { data: products } = await useFetch(`${apiBase}/products/products-tabs`);
+// console.log("products",products.value)
 </script>
