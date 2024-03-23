@@ -21,7 +21,8 @@
                         </div>
                         <ul>
                             <li v-for="category in categories.data" :key="category.id"
-                                @click="handleFilter({ category: category.id })" class="my-2 cursor-pointer">
+                                :class="{ 'filter-list-active': route.query.hasOwnProperty('category') && route.query.category == category.id }"
+                            @click="handleFilter({ category: category.id })" class="my-2 cursor-pointer">
                                 {{ category.name }}
                             </li>
                         </ul>
