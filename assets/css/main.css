@@ -1318,6 +1318,7 @@ color: #222831;
     width: 50%;
   }
 }
+
 /* Vue-Tostification */
 @media only screen and (min-width: 600px) {
   .Vue-Toastification__container.top-right .Vue-Toastification__toast--rtl,
@@ -1326,4 +1327,18 @@ color: #222831;
     margin-left: auto !important;
     font-family: "Vazir", Arial, Helvetica, sans-serif !important;
   }
+}
+
+.fade-in-image {
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+
 }

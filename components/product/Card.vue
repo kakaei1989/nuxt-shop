@@ -2,7 +2,7 @@
     <div class="box">
         <div>
             <div class="img-box">
-                <img :src="props.product.primary_image" alt="">
+                <img src="/images/preloader.png" v-img="props.product.primary_image" alt="">
             </div>
             <div class="detail-box">
                 <h5>
