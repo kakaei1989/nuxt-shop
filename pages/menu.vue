@@ -30,28 +30,29 @@
                     <div>
                         <label class="form-label">مرتب سازی</label>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <input class="form-check-input" @click="handleFilter({ sortBy: 'max' })" type="radio"
+                                name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault1">
                                 بیشترین قیمت
                             </label>
                         </div>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
+                            <input class="form-check-input" @click="handleFilter({ sortBy: 'min' })" type="radio"
+                                name="flexRadioDefault" id="flexRadioDefault2" checked>
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault2">
                                 کمترین قیمت
                             </label>
                         </div>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
-                                checked>
+                            <input class="form-check-input" @click="handleFilter({ sortBy: 'bestseller' })" type="radio"
+                                name="flexRadioDefault" id="flexRadioDefault3" checked>
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault3">
                                 پرفروش ترین
                             </label>
                         </div>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4"
-                                checked>
+                            <input class="form-check-input" @click="handleFilter({ sortBy: 'sale' })" type="radio"
+                                name="flexRadioDefault" id="flexRadioDefault4" checked>
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault4">
                                 با تخفیف
                             </label>
@@ -100,7 +101,6 @@
 const router = useRouter();
 const route = useRoute();
 const search = ref('')
-search.value=route.query.search
 const query = ref({});
 const { public: { apiBase } } = useRuntimeConfig();
 
@@ -112,7 +112,13 @@ const { data, refresh, pending } = await useFetch(() => `${apiBase}/menu`, {
 });
 
 function handleFilter(param) {
+    console.log(param, 'Param');
+
     query.value = { ...route.query, ...param }
+
+    if(!param.hasOwnProperty('page')) {
+        delete query.value.page
+    }
 
     router.push({
         path: '/menu',
