@@ -6,11 +6,12 @@
                     <div>
                         <label class="form-label">جستجو</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="نام محصول ..."
+                            <input type="text" v-model="search" class="form-control" placeholder="نام محصول ..."
                                 aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <a href="#" class="input-group-text" id="basic-addon2">
+                            <button @click="search !== '' && handleFilter({ search: search })" class="input-group-text"
+                                id="basic-addon2">
                                 <i class="bi bi-search"></i>
-                            </a>
+                            </button>
                         </div>
                     </div>
                     <hr>
@@ -19,7 +20,8 @@
                             دسته بندی
                         </div>
                         <ul>
-                            <li v-for="category in categories.data" :key="category.id" class="my-2 cursor-pointer">
+                            <li v-for="category in categories.data" :key="category.id"
+                                @click="handleFilter({ category: category.id })" class="my-2 cursor-pointer">
                                 {{ category.name }}
                             </li>
                         </ul>
@@ -63,22 +65,29 @@
                     </div>
 
                     <template v-else>
-                        <div class="row gx-3">
-                            <div v-for="product in data.data.products" :key="product.id" class="col-sm-6 col-lg-4">
-                                <ProductCard :product="product" />
-                            </div>
+                        <div v-if="data.data.products.length == 0"
+                            class="d-flex justify-content-center align-items-center h-100">
+                            <h5>محصولی یافت نشده !</h5>
                         </div>
 
-                        <nav class="d-flex justify-content-center mt-5">
-                            <ul class="pagination">
-                                <li v-for="(link, index) in data.data.meta.links.slice(1, -1)" :key="index"
-                                    class="page-item" :class="{ active: link.active }">
-                                    <button @click="handleFilter({ page: link.label })" class="page-link">{{
-                                        link.label
-                                    }}</button>
-                                </li>
-                            </ul>
-                        </nav>
+                        <div v-else>
+                            <div class="row gx-3">
+                                <div v-for="product in data.data.products" :key="product.id" class="col-sm-6 col-lg-4">
+                                    <ProductCard :product="product" />
+                                </div>
+                            </div>
+
+                            <nav class="d-flex justify-content-center mt-5">
+                                <ul class="pagination">
+                                    <li v-for="(link, index) in data.data.meta.links.slice(1, -1)" :key="index"
+                                        class="page-item" :class="{ active: link.active }">
+                                        <button @click="handleFilter({ page: link.label })" class="page-link">{{
+                                            link.label
+                                        }}</button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </template>
                 </div>
             </div>
@@ -88,17 +97,29 @@
 
 <script setup>
 
+const router = useRouter();
+const route = useRoute();
+const search = ref('')
+search.value=route.query.search
 const query = ref({});
 const { public: { apiBase } } = useRuntimeConfig();
 
 const { data: categories } = await useFetch(`${apiBase}/categories`);
 
+query.value = route.query;
 const { data, refresh, pending } = await useFetch(() => `${apiBase}/menu`, {
     query: query
 });
 
 function handleFilter(param) {
-    query.value = { ...param }
+    query.value = { ...route.query, ...param }
+
+    router.push({
+        path: '/menu',
+        query: query.value
+    })
+
+    console.log(query.value);
 
     refresh()
 }
