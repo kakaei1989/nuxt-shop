@@ -40,8 +40,6 @@ async function checkOtp() {
         return;
     }
 
-    return 'Success';
-
     try {
         loading.value = true;
         errors.value = [];
