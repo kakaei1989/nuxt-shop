@@ -22,12 +22,15 @@
                                 <li class="nav-item" :class="{ active: $route.path === '/' }">
                                     <NuxtLink class="nav-link" to="/">صفحه اصلی</NuxtLink>
                                 </li>
-                              <li class="nav-item" :class="{ active: $route.path === '/menu' }">
+
+                                <li class="nav-item" :class="{ active: $route.path === '/menu' }">
                                     <NuxtLink class="nav-link" to="/menu">منو</NuxtLink>
                                 </li>
+
                                 <li class="nav-item" :class="{ active: $route.path === '/about-us' }">
                                     <NuxtLink class="nav-link" to="/about-us">درباره ما</NuxtLink>
                                 </li>
+
                                 <li class="nav-item" :class="{ active: $route.path === '/contact-us' }">
                                     <NuxtLink class="nav-link" to="/contact-us">تماس باما</NuxtLink>
                                 </li>
@@ -39,7 +42,10 @@
                                         3
                                     </span>
                                 </a>
-                                <NuxtLink to="/auth/login" class="btn-auth">
+                                <NuxtLink v-if="authUser" to="/profile" class="btn-auth">
+                                    پروفایل
+                                </NuxtLink>
+                                <NuxtLink v-else to="/auth/login" class="btn-auth">
                                     ورود
                                 </NuxtLink>
                             </div>
@@ -51,3 +57,8 @@
         </div>
     </div>
 </template>
+
+<script setup>
+const {authUser } = useAuth()
+
+</script>
