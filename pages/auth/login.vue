@@ -14,6 +14,10 @@
 </template>
 
 <script setup>
-const showOtpForm = ref(false)
+definePageMeta({
+    middleware: 'guest'
+})
+
+const showOtpForm = ref(false);
 
 </script>
