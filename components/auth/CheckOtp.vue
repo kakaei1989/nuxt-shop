@@ -15,6 +15,7 @@
                     تایید
                     <div v-if="loading" class="spinner-border spinner-border-sm ms-2"></div>
                 </button>
+              <AuthResendOtp />
             </form>
         </div>
     </div>
