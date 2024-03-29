@@ -1,10 +1,12 @@
 <template>
-    <h1>Profile Page</h1>
+    <NuxtLayout name="profile">
+        <NuxtPage />
+    </NuxtLayout>
 </template>
 
 <script setup>
 definePageMeta({
-    middleware: 'auth'
+    middleware: 'auth',
 })
 
 </script>
