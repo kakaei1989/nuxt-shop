@@ -5,10 +5,10 @@
                 <div class="col-sm-12 col-lg-3">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="./index.html">اطلاعات کاربر</a>
+                            <NuxtLink to="/profile">اطلاعات کاربر</NuxtLink>
                         </li>
                         <li class="list-group-item">
-                            <a href="./addresses.html">آدرس ها</a>
+                            <NuxtLink href="/profile/addresses">آدرس ها</NuxtLink>
                         </li>
                         <li class="list-group-item">
                             <a href="./orders.html">سفارشات</a>
