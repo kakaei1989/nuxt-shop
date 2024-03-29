@@ -6,17 +6,18 @@
             </ul>
         </div>
         <div class="form_container">
-            <form @submit.prevent="checkOtp">
-                <div class="mb-3">
-                    <label for="cellphone" class="form-label">کد ورود </label>
-                    <input v-model="otp" type="text" class="form-control" id="cellphone">
-                </div>
-                <button type="submit" class="btn btn-primary btn-auth">
+            <div class="mb-3">
+                <label for="cellphone" class="form-label">کد ورود </label>
+                <input v-model="otp" type="text" class="form-control" id="cellphone">
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between">
+                <button @click="checkOtp" :disabled="loading" type="submit" class="btn btn-primary btn-auth">
                     تایید
                     <div v-if="loading" class="spinner-border spinner-border-sm ms-2"></div>
                 </button>
-              <AuthResendOtp />
-            </form>
+                <AuthResendOtp @resend-otp-errors="(err) => errors = err" />
+            </div>
         </div>
     </div>
 </template>
@@ -51,8 +52,9 @@ async function checkOtp() {
             body: { otp: otp.value }
         })
 
-        toast.success("باموفقیت وارد شدید");
         authUser.value = data
+        toast.success("باموفقیت وارد شدید");
+        return navigateTo('/')
 
     } catch (error) {
         errors.value = Object.values(error.data.data.message).flat();
