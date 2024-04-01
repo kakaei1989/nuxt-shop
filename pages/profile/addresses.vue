@@ -8,10 +8,10 @@
 
 <script setup>
 
-const { data } = await useFetch('/api/profile/addresses', {
+const { data, refresh } = await useFetch('/api/profile/addresses', {
     headers: useRequestHeaders(['cookie'])
 })
 
-console.log("jjjjjjjjjjjjjj",data.value);
+provide('refreshGetAddress', refresh)
 
 </script>

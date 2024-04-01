@@ -26,7 +26,7 @@
                         :validation-messages="{ required: 'فیلد کدپستی الزامیست', 'matches': 'فیلد کدپستی معتبر نمیباشد' }"
                         messages-class="form-text text-danger" :value="props.address.postal_code" />
                 </div>
-                
+
                 <ClientOnly fallback-tag="span" fallback="در حال بارگذاری ...">
                     <div class="col col-md-6">
                         <FormKit type="select" name="province_id" id="province_id" label="استان"
@@ -63,6 +63,7 @@
                     ویرایش
                     <div v-if="loading" class="spinner-border spinner-border-sm ms-2"></div>
                 </FormKit>
+                <ProfileAddressDelete :addressId="props.address.id" />
             </div>
         </div>
     </FormKit>
