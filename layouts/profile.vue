@@ -14,10 +14,10 @@
                             <NuxtLink to="/profile/orders">سفارشات</NuxtLink>
                         </li>
                         <li class="list-group-item">
-                            <a href="./transactions.html">تراکنش ها</a>
+                            <NuxtLink href="/profile/transactions">تراکنش ها</NuxtLink>
                         </li>
                         <li class="list-group-item">
-                            <a href="#">خروج</a>
+                            <a @click="logout" href="#">خروج</a>
                         </li>
                     </ul>
                 </div>
@@ -29,3 +29,20 @@
         </div>
     </section>
 </template>
+
+<script setup>
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+const { authUser } = useAuth();
+
+async function logout() {
+    await useFetch('/api/auth/logout', {
+        method: 'POST'
+    })
+    authUser.value = null;
+    toast.warning("از سیستم خارج شدید");
+    return navigateTo('/')
+}
+
+</script>
