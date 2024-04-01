@@ -4,7 +4,7 @@
         ایجاد آدرس جدید
     </button>
     <div class="collapse mt-3" id="collapseExample">
-        <FormKit type="form" @submit="create" :incomplete-message="false" :actions="false">
+        <FormKit type="form" @submit="create" #default="{ value }" :incomplete-message="false" :actions="false">
             <div class="card card-body">
                 <div class="row g-4">
                     <div class="col col-md-6">
@@ -28,8 +28,8 @@
                     </div>
                     <div class="col col-md-6">
                         <FormKit type="select" name="province_id" id="province_id" label="استان"
-                            label-class="form-label" input-class="form-select" validation="required"
-                            :validation-messages="{ required: 'فیلد استان الزامیست' }"
+                            @change="changeProvince" label-class="form-label" input-class="form-select"
+                            validation="required" :validation-messages="{ required: 'فیلد استان الزامیست' }"
                             messages-class="form-text text-danger">
                             <option v-for="province in props.provinces" :key="province.id" :value="province.id">
                                 {{ province.name }}
@@ -37,21 +37,28 @@
                         </FormKit>
                     </div>
                     <div class="col col-md-6">
-                        <label class="form-label">شهر</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>تهران</option>
-                            <option value="1">اصفهان</option>
-                            <option value="2">شیراز</option>
-                            <option value="3">یزد</option>
-                        </select>
+                        <FormKit type="select" ref="cityEl" name="city_id" id="city_id" label="شهر"
+                            label-class="form-label" input-class="form-select" validation="required"
+                            :validation-messages="{ required: 'فیلد شهر الزامیست' }"
+                            messages-class="form-text text-danger">
+                            <option v-for="city in props.cities.filter((item) => item.province_id == value.province_id)"
+                                :key="city.id" :value="city.id">
+                                {{ city.name }}
+                            </option>
+                        </FormKit>
                     </div>
+
                     <div class="col col-md-12">
-                        <label class="form-label">آدرس</label>
-                        <textarea type="text" rows="5" class="form-control"></textarea>
+                        <FormKit type="textarea" rows="5" name="address" id="address" label="آدرس" label-class="form-label"
+                            input-class="form-control" validation="required"
+                            :validation-messages="{ required: 'فیلد آدرس الزامیست' }"
+                            messages-class="form-text text-danger" />
                     </div>
                 </div>
                 <div>
-                    <button class="btn btn-primary mt-4">ایجاد</button>
+                    <FormKit type="submit" input-class="btn btn-primary mt-4">
+                        ایجاد
+                    </FormKit>
                 </div>
             </div>
         </FormKit>
@@ -60,7 +67,11 @@
 
 <script setup>
 const props = defineProps(['provinces', 'cities'])
+const cityEl = ref(null);
 
+function changeProvince(el) {
+    cityEl.value.node.input(props.cities.find((item) => item.province_id == el.target.value).id)
+}
 
 function create(formData) {
     console.log(formData);
