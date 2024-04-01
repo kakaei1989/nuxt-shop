@@ -6,7 +6,7 @@
             </div>
             <div class="detail-box">
                 <h5>
-                    {{ props.product.name }}
+                    <NuxtLink :to="`/products/${props.product.slug}`">{{ props.product.name }}</NuxtLink>
                 </h5>
                 <p>
                     {{ props.product.description }}
