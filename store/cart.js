@@ -25,5 +25,10 @@ export const useCartStore = defineStore('cart', {
         remove(id) {
             this.cart = this.cart.filter(p => p.id != id);
         }
-    }
+    },
+
+    persist: {
+        storage: persistedState.localStorage,
+        key: 'shopping-cart'
+    },
 })

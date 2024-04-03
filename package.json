@@ -22,5 +22,8 @@
     "vue-router": "^4.3.0",
     "vue-toastification": "^2.0.0-rc.5",
     "vue3-tabs-component": "^1.1.2"
+  },
+  "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.0"
   }
 }
