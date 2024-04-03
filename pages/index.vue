@@ -1,22 +1,21 @@
 <template>
-<Slider/>
-<Features/>
-<ProductTabs/>
-  <AboutUs/>
-  <ContactUs/>
+    <Slider />
+
+    <div>
+        {{ counter.count }}
+        <button @click="counter.increment(2)">Increment</button>
+        <button @click="counter.decrement(1)">Decrement</button>
+    </div>
+
+    <Features />
+    <ProductTabs />
+    <AboutUs />
+    <ContactUs />
 </template>
 
-<script>
-import Features from "../components/Features.vue";
-import AboutUs from "../components/AboutUs.vue";
-import ContactUs from "../components/ContactUs.vue";
+<script setup>
+import { useCounter } from "../store/counter";
 
-export default {
-  name: "index",
-  components: {ContactUs, AboutUs, Features},
-}
+const counter = useCounter();
+
 </script>
-
-<style scoped>
-
-</style>
