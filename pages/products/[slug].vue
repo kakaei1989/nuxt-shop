@@ -22,13 +22,13 @@
                             <p>{{ product.data.description }}</p>
 
                             <div class="mt-5 d-flex">
-                                <button class="btn-add">افزودن به سبد خرید</button>
+                                <button @click="addToCart(product.data)" class="btn-add">افزودن به سبد خرید</button>
                                 <div class="input-counter ms-4">
-                                    <span class="plus-btn">
+                                    <span class="plus-btn" @click="() => quantity < product.data.quantity && quantity++">
                                         +
                                     </span>
-                                    <div class="input-number">1</div>
-                                    <span class="minus-btn">
+                                    <div class="input-number">{{ quantity }}</div>
+                                    <span class="minus-btn" @click="() => quantity > 1 && quantity--">
                                         -
                                     </span>
                                 </div>
@@ -40,17 +40,19 @@
                                     <button type="button" data-bs-target="#carouselExampleIndicators"
                                         data-bs-slide-to="0" class="active"></button>
 
-                                    <button v-for="(image, index) in product.data.images" :key="index" type="button" data-bs-target="#carouselExampleIndicators"
+                                    <button v-for="(image, index) in product.data.images" :key="index" type="button"
+                                        data-bs-target="#carouselExampleIndicators"
                                         :data-bs-slide-to="`${index + 1}`"></button>
                                 </div>
-                                
+
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img class="d-block w-100" src="/images/preloader.png" width="464" height="309"
                                             v-img="product.data.primary_image" />
                                     </div>
 
-                                    <div v-for="(image, index) in product.data.images" :key="index" class="carousel-item">
+                                    <div v-for="(image, index) in product.data.images" :key="index"
+                                        class="carousel-item">
                                         <img class="d-block w-100" src="/images/preloader.png" width="464" height="309"
                                             v-img="image.image" />
                                     </div>
@@ -88,11 +90,21 @@
 </template>
 
 <script setup>
+import { useCartStore } from "../../store/cart"
+
+const quantity = ref(1);
 const route = useRoute();
 const { public: { apiBase } } = useRuntimeConfig();
 
 const { data: product } = await useFetch(`${apiBase}/products/${route.params.slug}`);
 
 const { data: randomProduct } = await useFetch(`${apiBase}/random-products?count=4`);
+
+const cart = useCartStore();
+
+function addToCart(product) {
+    cart.remove(product.id);
+    cart.addToCart(product, quantity.value);
+}
 
 </script>

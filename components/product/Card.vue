@@ -22,9 +22,9 @@
                         <span>تومان</span>
                     </h6>
 
-                    <a href="">
+                    <button @click="addToCart(props.product)">
                         <i class="bi bi-cart-fill text-white fs-5"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -32,6 +32,14 @@
 </template>
 
 <script setup>
-const props = defineProps(['product'])
+import { useCartStore } from "../../store/cart"
+
+const props = defineProps(['product']);
+const cart = useCartStore();
+
+function addToCart(product) {
+    cart.remove(product.id);
+    cart.addToCart(product, 1);
+}
 
 </script>
