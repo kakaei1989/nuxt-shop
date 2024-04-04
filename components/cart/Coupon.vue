@@ -11,6 +11,8 @@
 <script setup>
 import { useToast } from "vue-toastification";
 
+const props = defineProps(['coupon'])
+
 const code = ref('')
 const toast = useToast();
 const loading = ref(false);
@@ -30,7 +32,10 @@ async function checkCoupon() {
         })
 
         toast.success('کد تخفیف شما اعمال شد');
-        console.log(data);
+
+        props.coupon.code = code.value;
+        props.coupon.percent = data.percentage;
+
     } catch (error) {
         toast.error(Object.values(error.data.data.message).flat().toString())
     } finally {
