@@ -107,7 +107,7 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                        <button class="user_option btn-auth mt-4">پرداخت</button>
+                                        <CartPayment :coupon="coupon" :addressId="addressId" :cart="cartItems" />
                                     </div>
                                 </div>
                             </div>
