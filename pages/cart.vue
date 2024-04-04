@@ -18,102 +18,57 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr v-for="item in cartItems" :key="item.id">
                                                 <th>
-                                                    <img src="./images/b1.jpg" width="100" alt="">
+                                                    <img src="/images/preloader.png" width="100" height="60"
+                                                        v-img="item.primary_image" />
                                                 </th>
-                                                <td class="fw-bold">برگر گوشت ذغالی</td>
-                                                <td>
-                                                    <span>45,000</span>
-                                                    <span class="ms-1">تومان</span>
-                                                </td>
-                                                <td>
-                                                    <div class="input-counter">
-                                                        <span class="plus-btn">
-                                                            +
-                                                        </span>
-                                                        <div class="input-number">2</div>
-                                                        <span class="minus-btn">
-                                                            -
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span>90,000</span>
-                                                    <span class="ms-1">تومان</span>
-                                                </td>
-                                                <td>
-                                                    <i class="bi bi-x text-danger fw-bold fs-4 cursor-pointer"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    <img src="./images/p1.jpg" width="100" alt="">
-                                                </th>
-                                                <td class="fw-bold">پیتزا پپرونی</td>
+                                                <td class="fw-bold">{{ item.name }}</td>
                                                 <td>
                                                     <div>
-                                                        <del>135,000</del>
-                                                        115,000
-                                                        تومان
-                                                    </div>
-                                                    <div class="text-danger">
-                                                        10% تخفیف
+                                                        <span v-if="item.is_sale">
+                                                            {{ numberFormat(item.sale_price) }}
+                                                        </span>
+                                                        <span v-else>{{ numberFormat(item.price) }}</span>
+
+                                                        <span class="ms-1">تومان</span>
+
+                                                        <div v-if="item.is_sale" class="text-danger">
+                                                            {{ salePercent(item.price, item.sale_price) }}% تخفیف
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="input-counter">
-                                                        <span class="plus-btn">
+                                                        <span class="plus-btn"
+                                                            @click="() => item.qty < item.quantity && cart.increment(item.id)">
                                                             +
                                                         </span>
-                                                        <div class="input-number">1</div>
-                                                        <span class="minus-btn">
+                                                        <div class="input-number">{{ item.qty }}</div>
+                                                        <span class="minus-btn"
+                                                            @click="() => item.qty > 1 && cart.decrement(item.id)">
                                                             -
                                                         </span>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span>115,000</span>
+                                                    <span v-if="item.is_sale">
+                                                        {{ numberFormat(item.sale_price * item.qty) }}
+                                                    </span>
+                                                    <span v-else>
+                                                        {{ numberFormat(item.price * item.qty) }}
+                                                    </span>
                                                     <span class="ms-1">تومان</span>
                                                 </td>
                                                 <td>
-                                                    <i class="bi bi-x text-danger fw-bold fs-4 cursor-pointer"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    <img src="./images/p3.jpg" width="100" alt="">
-                                                </th>
-                                                <td class="fw-bold">پیتزا رست بیف</td>
-                                                <td>
-                                                    <div>
-                                                        165,000
-                                                        تومان
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="input-counter">
-                                                        <span class="plus-btn">
-                                                            +
-                                                        </span>
-                                                        <div class="input-number">2</div>
-                                                        <span class="minus-btn">
-                                                            -
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span>330,000</span>
-                                                    <span class="ms-1">تومان</span>
-                                                </td>
-                                                <td>
-                                                    <i class="bi bi-x text-danger fw-bold fs-4 cursor-pointer"></i>
+                                                    <i @click="removeFromCart(item.id)"
+                                                        class="bi bi-x text-danger fw-bold fs-4 cursor-pointer"></i>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <button class="btn btn-primary mb-4">پاک کردن سبد خرید</button>
+                                <button @click="cart.clear()" class="btn btn-primary mb-4">پاک کردن سبد خرید</button>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -197,9 +152,21 @@
 </template>
 
 <script setup>
+import { useToast } from "vue-toastification";
 import { useCartStore } from "../store/cart"
 
+definePageMeta({
+    middleware: 'auth'
+})
+
+const toast = useToast();
 const cart = useCartStore();
 const countCart = computed(() => cart.count)
+const cartItems = computed(() => cart.allItems)
+
+function removeFromCart(id) {
+    cart.remove(id)
+    toast.warning('محصول مورد نظر از سبد خرید پاک شد')
+}
 
 </script>

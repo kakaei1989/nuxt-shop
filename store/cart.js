@@ -13,6 +13,9 @@ export const useCartStore = defineStore('cart', {
     getters: {
         count(state) {
             return state.cart.length
+        },
+        allItems(state) {
+            return state.cart
         }
     },
 
@@ -23,13 +26,33 @@ export const useCartStore = defineStore('cart', {
                 qty: count
             })
 
-            console.log(this.cart, 'Cart');
-
             toast.success('محصول به سبد خرید اضافه شد')
+        },
+
+        increment(id) {
+            const item = this.cart.find(p => p.id == id);
+
+            if (item) {
+                item.qty++
+            }
+        },
+
+        decrement(id) {
+            const item = this.cart.find(p => p.id == id);
+
+            if (item) {
+                if (item.quantity > 1) {
+                    item.qty--
+                }
+            }
         },
 
         remove(id) {
             this.cart = this.cart.filter(p => p.id != id);
+        },
+
+        clear() {
+            this.cart = [];
         }
     },
 
